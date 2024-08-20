@@ -10,10 +10,11 @@ const stream = getFileStream('src/input/day_01.txt')
 
 const getFistNumber = (input: string): number => {
   let first = Infinity
-  for (let index = 0; first === Infinity; index++) {
+  for (let index = 0; index < input.length; index++) {
     const parsedChar = parseInt(input.charAt(index))
     if (!Number.isNaN(parsedChar)) {
       first = parsedChar
+      break
     }
   }
 
