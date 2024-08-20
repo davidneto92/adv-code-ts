@@ -1,6 +1,6 @@
 // https://adventofcode.com/2023/day/1
 
-import { getFileStream, getFistDigit } from './util';
+import { getFileStream, getFirstDigit } from './util';
 
 // go line by line
 // get first and last letter appearing in string, add together to create 2-digit number
@@ -14,8 +14,8 @@ const getfirstLastDigitsFromString = (input: string): number => {
     throw new Error('invalid line')
   }
 
-  const first = getFistDigit(input)
-  const last = getFistDigit(input.split('').reverse().join(''))
+  const first = getFirstDigit(input)
+  const last = getFirstDigit(input.split('').reverse().join(''))
 
   return parseInt(`${first}${last}`)
 }
