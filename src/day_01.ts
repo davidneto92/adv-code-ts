@@ -8,7 +8,7 @@ import { getFileStream } from './util';
 
 const stream = getFileStream('src/input/day_01.txt')
 
-const getFistNumber = (input: string): number => {
+const getFirstNumber = (input: string): number => {
   let first = Infinity
   for (let index = 0; index < input.length; index++) {
     const parsedChar = parseInt(input.charAt(index))
@@ -27,8 +27,8 @@ const getfirstLastDigitsFromString = (input: string): number => {
     throw new Error('invalid line')
   }
 
-  const first = getFistNumber(input)
-  const last = getFistNumber(input.split('').reverse().join(''))
+  const first = getFirstNumber(input)
+  const last = getFirstNumber(input.split('').reverse().join(''))
 
   return parseInt(`${first}${last}`)
 }
@@ -61,47 +61,91 @@ const getfirstLastWithConversion = (input: string): number => {
     return getfirstLastDigitsFromString(input)
   }
 
+  // sliding window checking 3, 4, 5 length substrings
+
   let first = Infinity
   let last = Infinity
 
   let left = 0
-
-  while (first === Infinity && left < input.length - 5) {
-    // sliding window
-    // check window of size 3
+  while (first === Infinity || left < input.length) {
     let substring = input.slice(left, left + 3)
+    let check = getFirstNumber(substring)
+    if (!isNaN(check) && check < Infinity) {
+      first = check
+      break
+    }
+
     if (['one', 'two', 'six'].includes(substring)) {
       first = DIGITS[substring as TDigitKey]
       break
     }
-    // check window of size 4
+
     substring = input.slice(left, left + 4)
     if (['four', 'five', 'nine'].includes(substring)) {
       first = DIGITS[substring as TDigitKey]
       break
     }
-    // check window of size 5
+
     substring = input.slice(left, left + 5)
     if (['three', 'seven', 'eight'].includes(substring)) {
       first = DIGITS[substring as TDigitKey]
       break
     }
 
-    // if no char digits found, iterate through substring of length 5
-    const check = getFistNumber(input)
+    // if no char digits string found, use getFirstNumber()
+    check = getFirstNumber(input)
     if (!isNaN(check) && check < Infinity) {
       first = check
     }
 
-    left += 5
+    left += 1
   }
 
-  console.log({ first, last })
+  let right = input.length
+  // while (last === Infinity || right > input.length - 1) {
+  while (last === Infinity || right >= 5) {
+    let substring = input.slice(right - 3, right)
+    let check = getFirstNumber(substring.split('').reverse().join(''))
+    if (!isNaN(check) && check < Infinity) {
+      last = check
+      break
+    }
+
+    if (['one', 'two', 'six'].includes(substring)) {
+      last = DIGITS[substring as TDigitKey]
+      break
+    }
+
+    substring = input.slice(right - 4, right)
+    if (['four', 'five', 'nine'].includes(substring)) {
+      last = DIGITS[substring as TDigitKey]
+      break
+    }
+
+    substring = input.slice(right - 5, right)
+    if (['three', 'seven', 'eight'].includes(substring)) {
+      last = DIGITS[substring as TDigitKey]
+      break
+    }
+
+    // if no char digits strings found, use getFirstNumber()
+    check = getFirstNumber(substring.split('').reverse().join(''))
+    if (!isNaN(check) && check < Infinity) {
+      last = check
+    }
+
+    right -= 1
+  }
+
+  // console.log({ first, last }, '\n')
   return parseInt(`${first}${last}`)
 }
 
+let sum = 0
 stream.on('line', line => {
-  const parsedValue = getfirstLastDigitsFromString(line)
-  // const parsedValue = getfirstLastWithConversion(line)
-  console.log({ parsedValue })
+  // console.log(sum)
+  // const parsedValue = getfirstLastDigitsFromString(line)
+  const parsedValue = getfirstLastWithConversion(line)
+  sum += parsedValue
+  console.log({ line, parsedValue, sum })
 })
