@@ -2,23 +2,13 @@
 
 import { getFileStream } from './util';
 
-// go line by line
-// get first and last letter appearing in string, add together to create 2-digit number
-// add each number together, print sum
-
 const stream = getFileStream('src/input/day_01.txt')
 
-const getFirstNumber = (input: string): number => {
-  let first = Infinity
-  for (let index = 0; index < input.length; index++) {
-    const parsedChar = parseInt(input.charAt(index))
-    if (!Number.isNaN(parsedChar)) {
-      first = parsedChar
-      break
-    }
-  }
-
-  return first
+const getFirstNumber = (input: string, reverse?: boolean): number => {
+  const result = /(?<=^.*?)(\d)/.exec(
+    reverse ? input.split('').reverse().join('') : input
+  )
+  return result ? parseInt(result[0], 10) : Infinity
 }
 
 // part 1
@@ -28,7 +18,7 @@ const getfirstLastDigitsFromString = (input: string): number => {
   }
 
   const first = getFirstNumber(input)
-  const last = getFirstNumber(input.split('').reverse().join(''))
+  const last = getFirstNumber(input, true)
 
   return parseInt(`${first}${last}`)
 }
@@ -92,7 +82,6 @@ const getfirstLastWithConversion = (input: string): number => {
       break
     }
 
-    // if no char digits string found, use getFirstNumber()
     check = getFirstNumber(input)
     if (!isNaN(check) && check < Infinity) {
       first = check
@@ -102,10 +91,9 @@ const getfirstLastWithConversion = (input: string): number => {
   }
 
   let right = input.length
-  // while (last === Infinity || right > input.length - 1) {
   while (last === Infinity || right >= 5) {
     let substring = input.slice(right - 3, right)
-    let check = getFirstNumber(substring.split('').reverse().join(''))
+    let check = getFirstNumber(substring, true)
     if (!isNaN(check) && check < Infinity) {
       last = check
       break
@@ -128,8 +116,7 @@ const getfirstLastWithConversion = (input: string): number => {
       break
     }
 
-    // if no char digits strings found, use getFirstNumber()
-    check = getFirstNumber(substring.split('').reverse().join(''))
+    check = getFirstNumber(substring, true)
     if (!isNaN(check) && check < Infinity) {
       last = check
     }
@@ -137,15 +124,13 @@ const getfirstLastWithConversion = (input: string): number => {
     right -= 1
   }
 
-  // console.log({ first, last }, '\n')
   return parseInt(`${first}${last}`)
 }
 
 let sum = 0
-stream.on('line', line => {
-  // console.log(sum)
-  // const parsedValue = getfirstLastDigitsFromString(line)
-  const parsedValue = getfirstLastWithConversion(line)
-  sum += parsedValue
-  console.log({ line, parsedValue, sum })
-})
+stream
+  .on('line', line => {
+    const parsedValue = getfirstLastWithConversion(line)
+    sum += parsedValue
+  })
+  .on('close', () => console.log(sum))
