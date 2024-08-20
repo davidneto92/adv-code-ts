@@ -6,4 +6,9 @@
   },
   "editor.fontSize": 16,
   "terminal.integrated.fontSize": 16,
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "[plaintext]": {
+    "files.insertFinalNewline": false
+  },
+
 }
