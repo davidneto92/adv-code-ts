@@ -1,15 +1,8 @@
 // https://adventofcode.com/2023/day/1
 
-import { getFileStream } from './util';
+import { getFileStream, getFirstDigit } from './util';
 
 const stream = getFileStream('src/input/day_01.txt')
-
-const getFirstNumber = (input: string, reverse?: boolean): number => {
-  const result = /(?<=^.*?)(\d)/.exec(
-    reverse ? input.split('').reverse().join('') : input
-  )
-  return result ? parseInt(result[0], 10) : Infinity
-}
 
 // part 1
 const getfirstLastDigitsFromString = (input: string): number => {
@@ -17,8 +10,8 @@ const getfirstLastDigitsFromString = (input: string): number => {
     throw new Error('invalid line')
   }
 
-  const first = getFirstNumber(input)
-  const last = getFirstNumber(input, true)
+  const first = getFirstDigit(input)
+  const last = getFirstDigit(input.split('').reverse().join(''))
 
   return parseInt(`${first}${last}`)
 }
@@ -59,7 +52,7 @@ const getfirstLastWithConversion = (input: string): number => {
   let left = 0
   while (first === Infinity || left < input.length) {
     let substring = input.slice(left, left + 3)
-    let check = getFirstNumber(substring)
+    let check = getFirstDigit(substring)
     if (!isNaN(check) && check < Infinity) {
       first = check
       break
@@ -82,7 +75,7 @@ const getfirstLastWithConversion = (input: string): number => {
       break
     }
 
-    check = getFirstNumber(input)
+    check = getFirstDigit(input)
     if (!isNaN(check) && check < Infinity) {
       first = check
     }
@@ -93,7 +86,7 @@ const getfirstLastWithConversion = (input: string): number => {
   let right = input.length
   while (last === Infinity || right >= 5) {
     let substring = input.slice(right - 3, right)
-    let check = getFirstNumber(substring, true)
+    let check = getFirstDigit(substring.split('').reverse().join(''))
     if (!isNaN(check) && check < Infinity) {
       last = check
       break
@@ -116,7 +109,7 @@ const getfirstLastWithConversion = (input: string): number => {
       break
     }
 
-    check = getFirstNumber(substring, true)
+    check = getFirstDigit(substring.split('').reverse().join(''))
     if (!isNaN(check) && check < Infinity) {
       last = check
     }
