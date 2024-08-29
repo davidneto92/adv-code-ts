@@ -4,10 +4,11 @@
   "[jsonc]": {
     "editor.formatOnSave": false
   },
-  "editor.fontSize": 12,
+  "editor.fontSize": 14,
   "terminal.integrated.fontSize": 16,
   "typescript.tsdk": "node_modules/typescript/lib",
   "[plaintext]": {
+    "editor.fontSize": 20,
     "files.insertFinalNewline": false
   },
 

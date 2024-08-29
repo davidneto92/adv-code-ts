@@ -1,8 +1,12 @@
 {
   "name": "advent-2023",
+  "scripts": {
+    "ts-node": "ts-node"
+  },
   "devDependencies": {
     "@total-typescript/ts-reset": "^0.5.1",
     "@types/node": "^22.4.1",
+    "ts-node": "^10.9.2",
     "typescript": "^5.5.4"
   }
 }
