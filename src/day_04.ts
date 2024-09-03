@@ -1,8 +1,9 @@
-import { getFileStream } from './util';
+import { getFileStream, getFirstNumber } from './util';
 
 const stream = getFileStream('src/input/day_04.txt');
 
 type TScratchcard = {
+  gameNumber: number;
   winningNumbers: Set<number>;
   field: Set<number>;
 };
@@ -21,6 +22,7 @@ const convertStringNumsToSet = (input: string, numberSeparator = ' '): Set<numbe
 };
 
 const parseScratchyData = (scratchyData: string): TScratchcard => {
+  const gameNumber = getFirstNumber(scratchyData)
   const parsed = scratchyData.split(':');
   const allNumbers = parsed[1];
   if (!allNumbers) {
@@ -36,6 +38,7 @@ const parseScratchyData = (scratchyData: string): TScratchcard => {
   const field = convertStringNumsToSet(fieldData);
 
   return {
+    gameNumber,
     winningNumbers,
     field,
   };
