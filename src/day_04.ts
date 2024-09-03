@@ -44,6 +44,7 @@ const parseScratchyData = (scratchyData: string): TScratchcard => {
   };
 };
 
+// part 1
 const getScratchcardPoints = ({ winningNumbers, field }: TScratchcard): number => {
   let totalMatches = 0;
   const winningNumbersIterator = winningNumbers.values();
@@ -56,16 +57,62 @@ const getScratchcardPoints = ({ winningNumbers, field }: TScratchcard): number =
   return totalMatches <= 1 ? totalMatches : 2 ** (totalMatches - 1);
 };
 
-let points = 0;
+// part 2
+const ticketMap: Map<number, number> = new Map()
+const getTotalScratchCards = ({ gameNumber: currentGameNumber, winningNumbers, field }: TScratchcard): void => {
+  if (!ticketMap.get(currentGameNumber)) {
+    ticketMap.set(currentGameNumber, 1)
+  }
+
+  let totalMatches = 0;
+  const timesToPlayCard = ticketMap.get(currentGameNumber) || 1
+  const winningNumbersIterator = winningNumbers.values();
+
+  // score the current scratchy for X times it has been duplicated (original + copies)
+  for (let _count = 0; _count < timesToPlayCard; _count++) {
+    for (const winningNumber of winningNumbersIterator) {
+      if (field.has(winningNumber)) {
+        totalMatches += 1;
+      }
+    }
+
+    // update ticketMap
+    if (totalMatches) {
+      for (let index = 1; index <= totalMatches; index++) {
+        const nextGameNumber = index + currentGameNumber
+        const currentCount = ticketMap.get(nextGameNumber)
+        if (!currentCount) {
+          ticketMap.set(nextGameNumber, 2)
+        } else {
+          ticketMap.set(nextGameNumber, currentCount + 1)
+        }
+      }
+    }
+  }
+}
+
+// let points = 0;
 stream
   .on('line', (scratchy: string) => {
-    // part 1
     const parsedScratchy = parseScratchyData(scratchy);
-    const result = getScratchcardPoints(parsedScratchy);
-    points += result;
+    // part 1
+    // const result = getScratchcardPoints(parsedScratchy);
+    // points += result;
+
+    // part 2
+    getTotalScratchCards(parsedScratchy)
   })
   .on('close', () => {
-    console.log({ total: points });
+    // part 1
+    // console.log({ total: points });
+
+    // part 2
+    const ticketMapValuesIterator = ticketMap.values()
+    let totalPlayedTickets = 0
+    for (const ticketCount of ticketMapValuesIterator) {
+      totalPlayedTickets += ticketCount
+    }
+    console.log(totalPlayedTickets)
   });
 
 // part 2 idea
