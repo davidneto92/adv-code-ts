@@ -64,3 +64,7 @@ stream
   .on('close', () => {
     console.log({ total: points });
   });
+
+// part 2 idea
+// create map of { gameNumber: numberOfCopies }
+// can still iterate through all games, and access the map for X times to parse a game
