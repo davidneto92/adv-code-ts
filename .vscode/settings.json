@@ -8,8 +8,8 @@
   "terminal.integrated.fontSize": 16,
   "typescript.tsdk": "node_modules/typescript/lib",
   "[plaintext]": {
-    "editor.fontSize": 20,
+    "editor.fontSize": 16,
     "files.insertFinalNewline": false
   },
-
+  "editor.fontFamily": "UbuntuMono Nerd Font"
 }
