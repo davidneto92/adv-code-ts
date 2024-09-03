@@ -60,12 +60,13 @@ const getScratchcardPoints = ({ winningNumbers, field }: TScratchcard): number =
 // part 2
 const ticketMap: Map<number, number> = new Map()
 const getTotalScratchCards = ({ gameNumber: currentGameNumber, winningNumbers, field }: TScratchcard): void => {
-  if (!ticketMap.get(currentGameNumber)) {
+  let timesToPlayCard = ticketMap.get(currentGameNumber)
+  if (!timesToPlayCard) {
     ticketMap.set(currentGameNumber, 1)
+    timesToPlayCard = 1
   }
 
   let totalMatches = 0;
-  const timesToPlayCard = ticketMap.get(currentGameNumber) || 1
   const winningNumbersIterator = winningNumbers.values();
 
   // score the current scratchy for X times it has been duplicated (original + copies)
