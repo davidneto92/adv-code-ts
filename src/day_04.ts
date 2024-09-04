@@ -1,4 +1,6 @@
-import { getFileStream, getFirstNumber } from './util';
+// https://adventofcode.com/2023/day/4
+
+import { getFileStream, getFirstNumber, convertStringToNumberSet } from './util';
 
 const stream = getFileStream('src/input/day_04.txt');
 
@@ -6,19 +8,6 @@ type TScratchcard = {
   gameNumber: number;
   winningNumbers: Set<number>;
   field: Set<number>;
-};
-
-// refactor to allow generics?
-const convertStringNumsToSet = (input: string, numberSeparator = ' '): Set<number> => {
-  const result = new Set<number>();
-  const cleanedInput = input.trim().split(numberSeparator);
-  cleanedInput.forEach((val) => {
-    if (val && val.length >= 1) {
-      result.add(parseInt(val, 10));
-    }
-  });
-
-  return result;
 };
 
 const parseScratchyData = (scratchyData: string): TScratchcard => {
@@ -34,8 +23,8 @@ const parseScratchyData = (scratchyData: string): TScratchcard => {
     throw new Error('no numbers on scratchy');
   }
 
-  const winningNumbers = convertStringNumsToSet(winningNumbersData);
-  const field = convertStringNumsToSet(fieldData);
+  const winningNumbers = convertStringToNumberSet(winningNumbersData);
+  const field = convertStringToNumberSet(fieldData);
 
   return {
     gameNumber,
