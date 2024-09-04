@@ -3,12 +3,22 @@
 import { convertStringToNumberArray, getFileStream, getNumberRange } from './util';
 const stream = getFileStream('src/input/day_06.txt')
 
-function parseLine(line: string): number[] {
+function parseLinePt1(line: string): number[] {
   const [, nums] = line.split(':')
   if (!nums) {
     throw new Error('invalid time segments')
   }
   return convertStringToNumberArray(nums)
+}
+
+function parseLinePt2(line: string): number[] {
+  const [, nums] = line.split(':')
+  if (!nums) {
+    throw new Error('invalid time segments')
+  }
+  const convertedNums = convertStringToNumberArray(nums)
+
+  return [parseInt(convertedNums.join(''), 10)]
 }
 
 function findMaxTimes(timeInput: number[], recordsToBeat: number[]): number[] {
@@ -26,6 +36,7 @@ function findMaxTimes(timeInput: number[], recordsToBeat: number[]): number[] {
     // const fourthQuarter = Math.ceil(currentTime * 0.75)
     // const possibleRates = getNumberRange(firstQuarter, fourthQuarter)
 
+    // brute force
     const possibleRates = getNumberRange(1, currentTime)
 
     let acc = 0
@@ -47,10 +58,18 @@ let recordsToBeat: number[] = []
 let lineNumber = 1
 stream
   .on('line', line => {
+    // part 1
+    // if (lineNumber === 1) {
+    //   timeInput = parseLinePt1(line)
+    // } else if (lineNumber === 2) {
+    //   recordsToBeat = parseLinePt1(line)
+    // }
+
+    // part 2
     if (lineNumber === 1) {
-      timeInput = parseLine(line)
+      timeInput = parseLinePt2(line)
     } else if (lineNumber === 2) {
-      recordsToBeat = parseLine(line)
+      recordsToBeat = parseLinePt2(line)
     }
     lineNumber++
   })
