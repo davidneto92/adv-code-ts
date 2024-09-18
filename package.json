@@ -1,7 +1,9 @@
 {
   "name": "advent-2023",
   "scripts": {
-    "ts-node": "ts-node"
+    "ts-node": "ts-node",
+    "build": "tsc --build",
+    "clean": "tsc --build --clean"
   },
   "devDependencies": {
     "@total-typescript/ts-reset": "^0.5.1",

@@ -1,2 +1,5 @@
+dist/
 node_modules/
+
+# puzzle inputs
 src/input/*.txt
