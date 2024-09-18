@@ -4,11 +4,21 @@ import { getFileStream } from './util';
 const stream = getFileStream('src/input/day_07.txt')
 
 type TCard = 'A' | 'K' | 'Q' | 'J' | 'T' | '9' | '8' | '7' | '6' | '5' | '4' | '3' | '2'
+type THandMap = Map<TCard, number>
+type THandWeight = 1 | 2 | 3 | 4 | 5 | 6 | 7
+
+type TCamelHandData = {
+  cards: string
+  bet: number
+  handWeight: THandWeight
+}
+
 const CARD_TO_VALUE_MAP: Record<TCard, number> = {
   'A': 14,
   'K': 13,
   'Q': 12,
-  'J': 11,
+  // 'J': 11, // part 1
+  'J': 1, // part 2
   'T': 10,
   '9': 9,
   '8': 8,
@@ -20,10 +30,62 @@ const CARD_TO_VALUE_MAP: Record<TCard, number> = {
   '2': 2
 }
 
-type TCamelHandData = {
-  cards: string
-  bet: number
-  handWeight: 1 | 2 | 3 | 4 | 5 | 6 | 7
+/**
+ * Switch statement to return hand weights with standard rules
+ */
+function standardHandLogic(numberOfCardTypes: number, cardTypeTotals: number[]): THandWeight {
+  switch (numberOfCardTypes) {
+    case 1: {
+      return 7 // five of a kind
+    }
+
+    case 2: {
+      if (cardTypeTotals.includes(4)) {
+        return 6 // four of a kind
+      }
+      return 5 // full house
+    }
+
+    case 3: {
+      if (cardTypeTotals.includes(3)) {
+        return 4 // three of a kind
+      }
+      return 3 // two pair
+    }
+
+    default: {
+      if (cardTypeTotals.includes(2)) {
+        return 2 // pair
+      }
+      return 1 // high card
+    }
+  }
+}
+
+// part 2
+function jokerHandLogic(
+  numberOfCardTypes: number,
+  jokerCount: number
+): THandWeight {
+  switch (numberOfCardTypes) {
+    case 1:
+    case 2: {
+      return 7 // five of a kind
+    }
+
+    case 3: {
+      // best possible is four of a kind or full house
+      return jokerCount > 1 ? 6 : 5
+    }
+
+    case 4: {
+      return 4 // best possible is 3 of a kind
+    }
+
+    default: {
+      return 2 // best possible is pair
+    }
+  }
 }
 
 /**
@@ -35,36 +97,14 @@ type TCamelHandData = {
  * 4+ types - pair OR high card
  * ```
  */
-function getCamelHandWeight(handMap: Map<string, number>): TCamelHandData['handWeight'] {
+function getCamelHandWeight(handMap: THandMap): THandWeight {
+  const jokerCount = handMap.get('J')
   const numberOfCardTypes = handMap.size
   const typeTotals = [...handMap.values()]
 
-  switch (numberOfCardTypes) {
-    case 1: {
-      return 7 // five of a kind
-    }
-
-    case 2: {
-      if (typeTotals.includes(4)) {
-        return 6 // four of a kind
-      }
-      return 5 // full house
-    }
-
-    case 3: {
-      if (typeTotals.includes(3)) {
-        return 4 // three of a kind
-      }
-      return 3 // two pair
-    }
-
-    default: {
-      if (typeTotals.includes(2)) {
-        return 2 // pair
-      }
-      return 1 // high card
-    }
-  }
+  return jokerCount
+    ? jokerHandLogic(numberOfCardTypes, jokerCount)
+    : standardHandLogic(numberOfCardTypes, typeTotals)
 }
 
 function parseCamelHand(handData: string): TCamelHandData {
@@ -73,8 +113,9 @@ function parseCamelHand(handData: string): TCamelHandData {
     throw new Error('Invalid hand data');
   }
 
-  const cardMap = new Map<string, number>()
-  for (const card of cards) {
+  const cardMap: THandMap = new Map<TCard, number>()
+  for (const _card of cards) {
+    const card = _card as TCard
     const currentValue = cardMap.get(card)
     if (!currentValue) {
       cardMap.set(card, 1)
@@ -121,14 +162,10 @@ function sortHands(prev: TCamelHandData, next: TCamelHandData): number {
 const hands: TCamelHandData[] = []
 stream
   .on('line', line => {
-    // unshift or push?
     hands.push(parseCamelHand(line))
   })
   .on('close', () => {
-    // console.log('unsorted', hands)
     hands.sort(sortHands)
-    console.log('sorted', hands)
-
     let betTotal = 0
     for (const [index, { bet }] of hands.entries()) {
       betTotal += bet * (index + 1)
@@ -136,6 +173,7 @@ stream
     console.log('total', betTotal)
   })
 
+// part 1
 // get the hand type of each hand
 // - create map of card values
 // - based on # of entries in map, we determine hand type
@@ -143,3 +181,8 @@ stream
 // - determine tie break for hands
 // multiply each hand's bid by it's spot in the sorted list
 // add up all the winnings
+
+// part 2
+// j are now wildcards, worth 1 point
+// j serves to complete hands for best possible outcome
+// assess number of jokers and then temporarily update the hand scoring
