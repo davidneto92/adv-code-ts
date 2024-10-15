@@ -1,5 +1,5 @@
 // https://adventofcode.com/2023/day/8
-
+import { lcm } from 'mathjs'
 import { getFileStream } from './util';
 const stream = getFileStream('src/input/day_08.txt')
 
@@ -40,31 +40,68 @@ stream
     }
   })
   // part 1
-  .on('close', () => {
-    let current = 'AAA'
-    let steps = 0
-    let index = 0
+  // .on('close', () => {
+  //   let current = 'AAA'
+  //   let steps = 0
+  //   let index = 0
 
-    while (current !== 'ZZZ') {
-      if (index > directions.length - 1) {
-        index = 0
-      }
-      const nextDirection = directions[index]
-      const currentOptions = allInstructions.get(current)
+  //   while (current !== 'ZZZ') {
+  //     if (index > directions.length - 1) {
+  //       index = 0
+  //     }
+  //     const nextDirection = directions[index]
+  //     const currentOptions = allInstructions.get(current)
 
-      if (!currentOptions || !nextDirection) {
-        throw new Error('unable to find next step')
-      }
+  //     if (!currentOptions || !nextDirection) {
+  //       throw new Error('unable to find next step')
+  //     }
 
-      current = currentOptions[nextDirection]
+  //     current = currentOptions[nextDirection]
 
-      steps++
-      index++
-    }
+  //     steps++
+  //     index++
+  //   }
 
-    console.log(steps)
-  })
+  //   console.log(steps)
+  // })
   // part 2
   .on('close', () => {
+    // We are finding the lowest common multiple of all paths
+    // so lets get the steps required for each path, and then calculate lcm.
+    let paths: string[] = []
+    allInstructions.forEach((_, key) => {
+      if (key.endsWith('A')) {
+        paths.push(key)
+      }
+    })
 
+    const pathSteps: Record<string, number> = {}
+    for (const path of paths) {
+      let current = path
+      let steps = 0
+      let index = 0
+
+      while (!current.endsWith('Z')) {
+        if (index > directions.length - 1) {
+          index = 0
+        }
+        const nextDirection = directions[index]
+        const currentOptions = allInstructions.get(current)
+
+        if (!currentOptions || !nextDirection) {
+          throw new Error('unable to find next step')
+        }
+        current = currentOptions[nextDirection]
+
+        steps++
+        index++
+      }
+
+      pathSteps[path] = steps
+    }
+
+    const nums = Object.values(pathSteps)
+    const result = nums.reduce((prev, curr) => lcm(prev, curr), 1)
+
+    console.log('least common multiple', result)
   })
