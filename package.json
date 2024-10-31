@@ -3,11 +3,13 @@
   "scripts": {
     "ts-node": "ts-node",
     "build": "tsc --build",
-    "clean": "tsc --build --clean"
+    "clean": "tsc --build --clean",
+    "generate": "node generateDay.js"
   },
   "devDependencies": {
     "@total-typescript/ts-reset": "^0.5.1",
     "@types/node": "^22.4.1",
+    "handlebars": "^4.7.8",
     "ts-node": "^10.9.2",
     "typescript": "^5.5.4"
   },
