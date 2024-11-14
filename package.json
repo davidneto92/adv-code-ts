@@ -1,7 +1,6 @@
 {
   "name": "advent-2023",
   "scripts": {
-    "ts-node": "npx ts-node",
     "build": "tsc --build",
     "clean": "tsc --build --clean",
     "generate": "node generateDay.js"

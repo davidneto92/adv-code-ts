@@ -42,9 +42,27 @@ function processLine(input: string) {
   }
 
   let lineSum = 0
-  allSets.forEach(({ values }) =>
-    lineSum += getLastItem(values, 0)
-  )
+  // part 1
+  // allSets.forEach(({ values }) =>
+  //   lineSum += getLastItem(values, 0)
+  // )
+
+  // part 2
+  // console.log(allSets)
+
+  for (let index = allSets.length - 1; index > 1; index--) {
+    const currentSet = allSets[index]?.values
+    const nextSet = allSets[index - 1]?.values
+    if (!currentSet || !nextSet) {
+      throw new Error('sets are busted')
+    }
+
+    console.log((nextSet[0] as any) - (currentSet[0] as any))
+
+  }
+
+  // console.log(allSets)
+  console.log('done')
   return lineSum
 }
 
@@ -52,9 +70,8 @@ let sum = 0
 stream
   .on('line', line => {
     const lineValue = processLine(line)
-
     sum += lineValue
   })
   .on('close', () => {
-    console.log(sum)
+    console.log('sum:', sum)
   })
