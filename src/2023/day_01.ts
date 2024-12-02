@@ -1,12 +1,12 @@
 // https://adventofcode.com/2023/day/1
 
-import { getFileStream, getFirstDigit } from './util';
+import { getFileStream, getFirstDigit } from '../util';
 
 // go line by line
 // get first and last letter appearing in string, add together to create 2-digit number
 // add each number together, print sum
 
-const stream = getFileStream('src/input/day_01.txt')
+const stream = getFileStream('input/2023/day_01.txt')
 
 // part 1
 const getfirstLastDigitsFromString = (input: string): number => {

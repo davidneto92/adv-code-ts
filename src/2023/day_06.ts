@@ -1,7 +1,7 @@
 // https://adventofcode.com/2023/day/6
 
-import { convertStringToNumberArray, getFileStream, getNumberRange } from './util';
-const stream = getFileStream('src/input/day_06.txt')
+import { convertStringToNumberArray, getFileStream, getNumberRange } from '../util';
+const stream = getFileStream('input/2023/day_06.txt')
 
 function parseLinePt1(line: string): number[] {
   const [, nums] = line.split(':')

@@ -1,8 +1,8 @@
 // https://adventofcode.com/2023/day/4
 
-import { getFileStream, getFirstNumber, convertStringToNumberSet } from './util';
+import { getFileStream, getFirstNumber, convertStringToNumberSet } from '../util';
 
-const stream = getFileStream('src/input/day_04.txt');
+const stream = getFileStream('input/2023/day_04.txt');
 
 type TScratchcard = {
   gameNumber: number;
