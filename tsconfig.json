@@ -106,6 +106,7 @@
     "skipLibCheck": true                                 /* Skip type checking all .d.ts files. */
   },
   "include": [
-    "src/*"
+    "src/2023/*",
+    "src/2024/*",
   ]
 }

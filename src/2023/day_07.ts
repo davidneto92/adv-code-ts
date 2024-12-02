@@ -1,7 +1,7 @@
 // https://adventofcode.com/2023/day/7
 
-import { getFileStream } from './util';
-const stream = getFileStream('src/input/day_07.txt')
+import { getFileStream } from '../util';
+const stream = getFileStream('input/2023/day_07.txt')
 
 type TCard = 'A' | 'K' | 'Q' | 'J' | 'T' | '9' | '8' | '7' | '6' | '5' | '4' | '3' | '2'
 const CARD_TO_VALUE_MAP: Record<TCard, number> = {

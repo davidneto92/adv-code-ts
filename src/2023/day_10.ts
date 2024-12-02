@@ -1,6 +1,6 @@
 // https://adventofcode.com/2023/day/10
-import { getFileStream } from './util';
-const stream = getFileStream('src/input/day_10.txt')
+import { getFileStream } from '../util';
+const stream = getFileStream('input/2023/day_10.txt')
 
 // This is kinda messy. Some good pieces, some bad error handling.
 

@@ -1,8 +1,8 @@
 // https://adventofcode.com/2023/day/3
 
-import { getFileStream, getFirstNumber } from './util';
+import { getFileStream, getFirstNumber } from '../util';
 
-const stream = getFileStream('src/input/day_03.txt');
+const stream = getFileStream('input/2023/day_03.txt');
 
 const getEngineLine = (input: string): string[] => {
   return input.split('');
