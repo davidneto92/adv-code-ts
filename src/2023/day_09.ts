@@ -1,6 +1,6 @@
 // https://adventofcode.com/2023/day/9
-import { convertStringToNumberArray, getFileStream, getLastItem } from './util';
-const stream = getFileStream('src/input/day_09.txt');
+import { convertStringToNumberArray, getFileStream, getLastItem } from '../util';
+const stream = getFileStream('input/2023/day_09.txt');
 
 // iterate through line, getting list of differences
 // keep finding differences until all are 0

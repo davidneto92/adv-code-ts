@@ -1,7 +1,7 @@
 // https://adventofcode.com/2023/day/8
 import { lcm } from 'mathjs'
-import { getFileStream } from './util';
-const stream = getFileStream('src/input/day_08.txt')
+import { getFileStream } from '../util';
+const stream = getFileStream('input/2023/day_08.txt')
 
 type TTurnDirections = ('L' | 'R')[]
 interface IDirectionElement {

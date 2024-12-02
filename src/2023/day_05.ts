@@ -1,7 +1,7 @@
 // https://adventofcode.com/2023/day/5
 
-import { convertStringToNumberSet, getFileStream } from './util';
-const stream = getFileStream('src/input/day_05.txt')
+import { convertStringToNumberSet, getFileStream } from '../util';
+const stream = getFileStream('input/2023/day_05.txt')
 
 function range(start: number, end: number): number[] {
   return [...Array(1 + end - start).keys()].map(v => start + v)

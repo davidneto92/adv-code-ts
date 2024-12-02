@@ -1,6 +1,6 @@
 // https://adventofcode.com/2023/day/2
 
-import { getFileStream, getFirstNumber } from './util';
+import { getFileStream, getFirstNumber } from '../util';
 
 type TColor = 'red' | 'blue' | 'green'
 const LIMITS: Record<TColor, number> = {
@@ -113,7 +113,7 @@ const parseGameDataPart2 = (gameData: string): number | 0 => {
   return powers
 }
 
-const stream = getFileStream('src/input/day_02.txt')
+const stream = getFileStream('input/2023/day_02.txt')
 let idSum = 0
 let powerSum = 0
 stream
