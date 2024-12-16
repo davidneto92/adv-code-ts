@@ -1,7 +1,7 @@
 // https://adventofcode.com/2023/day/11
 import { distance } from 'mathjs'
-import { getFileStream } from './util';
-const stream = getFileStream('src/input/day_11.txt')
+import { getFileStream } from '../util';
+const stream = getFileStream('input/2023/day_11.txt')
 
 // read all lines
 // create array sized to line length that will keep track of which columns are empty
