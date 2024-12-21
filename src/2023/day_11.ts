@@ -12,12 +12,10 @@ const stream = getFileStream('input/2023/day_11.txt');
 type TCoordinate = [number, number] // [column, row]
 
 const galaxies: TCoordinate[] = []
-// const emptyRowIndexes: number[] = []
 let emptyColumnIndexes: number[]
-// const emptyColumnIndexes: number[] = []
 
 /**
- * Reads each row and gets coordinates for each galaxy
+ * Reads each row and get coordinates for each galaxy
  */
 function parseMapLine(input: string, rowIndex: number): boolean {
   let isRowEmpty = true
@@ -29,10 +27,6 @@ function parseMapLine(input: string, rowIndex: number): boolean {
       emptyColumnIndexes[index] = 1
     }
   }
-
-  // if (isRowEmpty) {
-  //   emptyRowIndexes.push(rowIndex)
-  // }
 
   return isRowEmpty
 }
@@ -59,7 +53,6 @@ stream
     lineNumber = lineNumber + 1 + (isRowEmpty ? 1 : 0)
   })
   .on('close', () => {
-    // refactor this later
     const actual: number[] = []
     emptyColumnIndexes.forEach((val: number, index: number) => {
       if (val === 0) {
@@ -67,19 +60,10 @@ stream
       }
     })
 
-    // console.log({
-    //   galaxies,
-    //   emptyColumnIndexes: actual,
-    //   // emptyRowIndexes,
-    // })
-
     const adjustedGalaxies: TCoordinate[] = galaxies.map((galaxy) => {
       const columnUpdate = getOffset(galaxy[0], actual)
-      // console.log(`${galaxy[0]} is larger than ${columnUpdate} values in ${actual}`)
       return [galaxy[0] + columnUpdate, galaxy[1]]
     })
-
-    // console.log({ adjustedGalaxies })
 
     let distanceSum = 0
     for (let startingIndex = 0; startingIndex < adjustedGalaxies.length - 1; startingIndex++) {
@@ -90,10 +74,8 @@ stream
         if (!startingGalaxy || !endingGalaxy) {
           throw new Error('missing galaxies')
         }
-        const columnDiff = Math.abs(endingGalaxy[0] - startingGalaxy[0])
-        const rowDiff = Math.abs(endingGalaxy[1] - startingGalaxy[1])
-        // console.log('sum', columnDiff + rowDiff)
-        distanceSum = distanceSum + columnDiff + rowDiff
+        // add column distance and row distance
+        distanceSum = distanceSum + Math.abs(endingGalaxy[0] - startingGalaxy[0]) + Math.abs(endingGalaxy[1] - startingGalaxy[1])
       }
     }
 
