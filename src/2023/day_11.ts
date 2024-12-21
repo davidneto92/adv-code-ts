@@ -11,7 +11,7 @@ const stream = getFileStream('input/2023/day_11.txt');
 
 type TCoordinate = [number, number] // [column, row]
 
-const galaxies: TCoordinate[] = []
+let galaxies: TCoordinate[] = []
 let emptyColumnIndexes: number[]
 
 /**
@@ -43,6 +43,7 @@ function getOffset(check: number, values: number[]): number {
 }
 
 let lineNumber = 0
+
 stream
   .on('line', (line) => {
     if (emptyColumnIndexes === undefined) {
@@ -50,7 +51,10 @@ stream
     }
     // add row offset as we go
     const isRowEmpty = parseMapLine(line, lineNumber)
-    lineNumber = lineNumber + 1 + (isRowEmpty ? 1 : 0)
+    // part 1
+    // lineNumber = lineNumber + 1 + (isRowEmpty ? 1 : 0)
+    // part 2
+    lineNumber = lineNumber + 1 + (isRowEmpty ? 999999 : 0)
   })
   .on('close', () => {
     const actual: number[] = []
@@ -60,17 +64,20 @@ stream
       }
     })
 
-    const adjustedGalaxies: TCoordinate[] = galaxies.map((galaxy) => {
-      const columnUpdate = getOffset(galaxy[0], actual)
+    galaxies = galaxies.map((galaxy) => {
+      // part 1
+      // const columnUpdate = getOffset(galaxy[0], actual)
+      // part 2
+      const columnUpdate = getOffset(galaxy[0], actual) * 999999
       return [galaxy[0] + columnUpdate, galaxy[1]]
     })
 
     let distanceSum = 0
-    for (let startingIndex = 0; startingIndex < adjustedGalaxies.length - 1; startingIndex++) {
-      const startingGalaxy = adjustedGalaxies[startingIndex];
+    for (let startingIndex = 0; startingIndex < galaxies.length - 1; startingIndex++) {
+      const startingGalaxy = galaxies[startingIndex];
 
-      for (let endingIndex = startingIndex + 1; endingIndex < adjustedGalaxies.length; endingIndex++) {
-        const endingGalaxy = adjustedGalaxies[endingIndex]
+      for (let endingIndex = startingIndex + 1; endingIndex < galaxies.length; endingIndex++) {
+        const endingGalaxy = galaxies[endingIndex]
         if (!startingGalaxy || !endingGalaxy) {
           throw new Error('missing galaxies')
         }
